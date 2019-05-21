@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -55,21 +56,21 @@ public class ClientServlet extends HttpServlet {
 			showOrdersDetail(request,response);
 		}
 	}
-	//���ݶ�����id��ѯ������
+	//锟斤拷锟捷讹拷锟斤拷锟斤拷id锟斤拷询锟斤拷锟斤拷锟斤拷
 	private void showOrdersDetail(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		String ordersId = request.getParameter("ordersId");
-		//�鶩����
+		//锟介订锟斤拷锟斤拷
 		List<OrdersItem> items = s.findOrdersItemByOrdersId(ordersId);
 		request.setAttribute("items", items);
 		request.getRequestDispatcher("/showOrdersDetail.jsp").forward(request, response);
 	}
-	//����֧������ģ�����֧������ö���״̬
+	//锟斤拷锟斤拷支锟斤拷锟斤拷锟斤拷模锟斤拷锟斤拷锟街э拷锟斤拷锟斤拷锟矫讹拷锟斤拷状态
 	private void paySuccess(HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
 		String p1_MerId = request.getParameter("p1_MerId");
 		String r0_Cmd = request.getParameter("r0_Cmd");
-		String r1_Code = request.getParameter("r1_Code");//֧�������1���ǳɹ�
+		String r1_Code = request.getParameter("r1_Code");//支锟斤拷锟斤拷锟斤拷锟�锟斤拷锟角成癸拷
 		String r2_TrxId = request.getParameter("r2_TrxId");
 		String r3_Amt = request.getParameter("r3_Amt");
 		String r4_Cur = request.getParameter("r4_Cur");
@@ -78,81 +79,81 @@ public class ClientServlet extends HttpServlet {
 		String r7_Uid = request.getParameter("r7_Uid");
 		String r8_MP = request.getParameter("r8_MP");
 		String r9_BType = request.getParameter("r9_BType");
-//		Ϊ��1��: ������ض���;
-//		 Ϊ��2��: ��������Ե�ͨѶ.
+//		为锟斤拷1锟斤拷: 锟斤拷锟斤拷锟斤拷囟锟斤拷锟�
+//		 为锟斤拷2锟斤拷: 锟斤拷锟斤拷锟斤拷锟斤拷缘锟酵ㄑ�
 		String  hmac= request.getParameter("hmac");
 		
-		//��֤�����Ƿ���ȷ
+		//锟斤拷证锟斤拷锟斤拷锟角凤拷锟斤拷确
 		boolean b = PaymentUtil.verifyCallback(hmac, p1_MerId, r0_Cmd, r1_Code, r2_TrxId, r3_Amt, r4_Cur, r5_Pid, r6_Order, r7_Uid, r8_MP, r9_BType, PropertyUtil.getValue("keyValue"));
 		if(!b){
-			response.getWriter().write("����ʧ�ܣ����ܴ��ڷ��գ�");
+			response.getWriter().write("锟斤拷锟斤拷失锟杰ｏ拷锟斤拷锟杰达拷锟节凤拷锟秸ｏ拷");
 			return;
 		}
-		//����û������
+		//锟斤拷锟斤拷没锟斤拷锟斤拷锟斤拷
 		if("1".equals(r1_Code)){
-			//֧���ɹ����ҵ����������Ķ�����״̬����ֹ�����ظ��ύr6_Order
+			//支锟斤拷锟缴癸拷锟斤拷锟揭碉拷锟斤拷锟斤拷锟斤拷锟斤拷锟侥讹拷锟斤拷锟斤拷状态锟斤拷锟斤拷止锟斤拷锟斤拷锟截革拷锟结交r6_Order
 			
 //			if("2".equals(r9_BType)){
 //				response.getWriter().write("success");
 //			}
-			//�ҵ�����������״̬Ϊ1 �Ѹ���
+			//锟揭碉拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷状态为1 锟窖革拷锟斤拷
 			s.paiedOrders(r6_Order);
-			response.getWriter().write("֧���ɹ���2����Զ�ת�����վ����ҳ");
+			response.getWriter().write("支锟斤拷锟缴癸拷锟斤拷2锟斤拷锟斤拷远锟阶拷锟斤拷锟斤拷站锟斤拷锟斤拷页");
 			response.setHeader("Refresh", "2;url="+request.getContextPath());
 		}
 	}
-	//�鿴��ǰ�û��Ķ���
+	//锟介看锟斤拷前锟矫伙拷锟侥讹拷锟斤拷
 	private void showSelfOrders(HttpServletRequest request,
 			HttpServletResponse response) throws IOException, ServletException {
-		//�ж��û��Ƿ��¼
+		//锟叫讹拷锟矫伙拷锟角凤拷锟铰�		
 		User user = (User) request.getSession().getAttribute("user");
 		if(user==null){
-			//û�е�½��ת���½ҳ��
+			//没锟叫碉拷陆锟斤拷转锟斤拷锟铰揭筹拷锟�			
 			response.sendRedirect(request.getContextPath()+"/login.jsp");
 		}else{
-			//�ѵ�¼���鿴��������Ϣ���������ڽ������� ����
+			//锟窖碉拷录锟斤拷锟介看锟斤拷锟斤拷锟斤拷锟斤拷息锟斤拷锟斤拷锟斤拷锟斤拷锟节斤拷锟斤拷锟斤拷锟斤拷 锟斤拷锟斤拷
 			List<Orders> orders = s.findOrdersByUserId(user.getId());
 			request.setAttribute("os", orders);
 			request.getRequestDispatcher("/showOrders.jsp").forward(request, response);
 		}
 	}
-	//ע��
+	//注锟斤拷
 	private void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		request.getSession().removeAttribute("user");
-		response.getWriter().write("ע���ɹ���2����Զ�ת�����վ����ҳ");
+		response.getWriter().write("注锟斤拷锟缴癸拷锟斤拷2锟斤拷锟斤拷远锟阶拷锟斤拷锟斤拷站锟斤拷锟斤拷页");
 		response.setHeader("Refresh", "2;url="+request.getContextPath());
 	}
-	//����
+	//锟斤拷锟斤拷
 	private void active(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String code = request.getParameter("code");
 		if(code!=null){
 			User user = s.findUserByCode(code);
 			if(user==null){
-				request.setAttribute("message", "<script type='text/javascript'>alert('�����벻��ȷ����ʧЧ')</script>");
+				request.setAttribute("message", "<script type='text/javascript'>alert('锟斤拷锟斤拷锟诫不锟斤拷确锟斤拷锟斤拷失效')</script>");
 				request.getRequestDispatcher("/").forward(request, response);
 			}else{
-				s.active(user);//�����˻�
-				response.getWriter().write("����ɹ���2����Զ�ת�����վ����ҳ");
+				s.active(user);//锟斤拷锟斤拷锟剿伙拷
+				response.getWriter().write("锟斤拷锟斤拷晒锟斤拷锟�锟斤拷锟斤拷远锟阶拷锟斤拷锟斤拷站锟斤拷锟斤拷页");
 				response.setHeader("Refresh", "2;url="+request.getContextPath());
 			}
 		}
 	}
-	//�û���½
+	//锟矫伙拷锟斤拷陆
 	private void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		User user = s.login(username,password);
 		if(user==null){
-			request.setAttribute("message", "<script type='text/javascript'>alert('������û��������룬���������˻���ľ�м���')</script>");
+			request.setAttribute("message", "<script type='text/javascript'>alert('锟斤拷锟斤拷锟斤拷没锟斤拷锟斤拷锟斤拷锟斤拷耄拷锟斤拷锟斤拷锟斤拷锟斤拷嘶锟斤拷锟侥撅拷屑锟斤拷锟�)</script>");
 		}else{
 			request.getSession().setAttribute("user", user);
 		}
 		request.getRequestDispatcher("/").forward(request, response);
 	}
-	//���û�ע��
+	//锟斤拷锟矫伙拷注锟斤拷
 	private void regist(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		User user = WebUtil.findFormData(User.class, request);
-		//���ͼ�����֤��:ȡ��user�е�email���ԣ������ʼ��������ʼ����ŵ�һ���������߳��У�
+		//锟斤拷锟酵硷拷锟斤拷锟斤拷证锟斤拷:取锟斤拷user锟叫碉拷email锟斤拷锟皆ｏ拷锟斤拷锟斤拷锟绞硷拷锟斤拷锟斤拷锟斤拷锟绞硷拷锟斤拷锟脚碉拷一锟斤拷锟斤拷锟斤拷锟斤拷锟竭筹拷锟叫ｏ拷
 		String code = IdGenerator.genPK();
 		user.setCode(code);
 		
@@ -161,52 +162,49 @@ public class ClientServlet extends HttpServlet {
 		user.setActived(true);
 		
 		s.regist(user);
-		request.setAttribute("message", "<script type='text/javascript'>alert('ע��ɹ�')</script>");
+		request.setAttribute("message", "<script type='text/javascript'>alert('注锟斤拷晒锟�)</script>");
 		request.getRequestDispatcher("/").forward(request, response);
 		
 	}
-	//�����û��Ķ���
+	//锟斤拷锟斤拷锟矫伙拷锟侥讹拷锟斤拷
 	private void genOrders(HttpServletRequest request,
 			HttpServletResponse response) throws IOException, ServletException {
-		//�ж��û��Ƿ��¼
+		//锟叫讹拷锟矫伙拷锟角凤拷锟铰�		
 		User user = (User) request.getSession().getAttribute("user");
 		if(user!=null){
-			//��½�ˣ��ѹ��ﳵ���������������Ϣ���浽���ݿ���
-				//�ѹ��ﳵ�е���Ϣȡ�������浽ʵ����
+			//锟斤拷陆锟剿ｏ拷锟窖癸拷锟斤车锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟较拷锟斤拷娴斤拷锟斤拷菘锟斤拷锟�				//锟窖癸拷锟斤车锟叫碉拷锟斤拷息取锟斤拷锟斤拷锟斤拷锟芥到实锟斤拷锟斤拷
 				Cart cart = (Cart)request.getSession().getAttribute("cart");
 				if(cart!=null){
-					//����ʵ�����ݵ����ݿ���
+					//锟斤拷锟斤拷实锟斤拷锟斤拷锟捷碉拷锟斤拷锟捷匡拷锟斤拷
 					Orders o = new Orders();
 					o.setNum(cart.getTotalNum());
 					o.setMoney(cart.getTotalPrice());
-					o.setUser(user);//�������û��Ĺ�ϵ
-					//������
+					o.setUser(user);//锟斤拷锟斤拷锟斤拷锟矫伙拷锟侥癸拷系
+					//锟斤拷锟斤拷锟斤拷
 					for(Map.Entry<String, CartItem> me:cart.getItems().entrySet()){
 						OrdersItem item = new OrdersItem();
 						item.setNum(me.getValue().getNum());
 						item.setPrice(me.getValue().getPrice());
 						item.setBook(me.getValue().getBook());
-						o.getItems().add(item);//�Ѷ�������뵽������
+						o.getItems().add(item);//锟窖讹拷锟斤拷锟斤拷锟斤拷氲斤拷锟斤拷锟斤拷锟�					}
+					s.genOrders(o);//锟斤拷锟缴讹拷锟斤拷
 					}
-					s.genOrders(o);//���ɶ���
-					
 				}else{
-					throw new RuntimeException("���ﳵ����");
+					throw new RuntimeException("锟斤拷锟斤车锟斤拷锟斤拷");
 				}
-				request.setAttribute("message", "<script type='text/javascript'>alert('�������ɳɹ�')</script>");
+				request.setAttribute("message", "<script type='text/javascript'>alert('锟斤拷锟斤拷锟斤拷锟缴成癸拷')</script>");
 				request.getRequestDispatcher("/showOrdersDetail.jsp").forward(request, response);
 		}else{
-			//û�е�½��ת���½ҳ��
-			response.sendRedirect(request.getContextPath()+"/login.jsp");
+			//没锟叫碉拷陆锟斤拷转锟斤拷锟铰揭筹拷锟�			response.sendRedirect(request.getContextPath()+"/login.jsp");
 		}
 	}
-	//购买方法
+	//璐拱鏂规硶
 	private void buy(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//获取BOOKID
+		//鑾峰彇BOOKID
 		String bookId = request.getParameter("bookId");
-		//通过ID去查找整条数据
+		//閫氳繃ID鍘绘煡鎵炬暣鏉℃暟鎹�		
 		Book book = s.findBookById(bookId);
-		//�ȵù��ﳵ,û�У�����һ��Ū��ȥ
+		//锟饺得癸拷锟斤车,没锟叫ｏ拷锟斤拷锟斤拷一锟斤拷弄锟斤拷去
 		HttpSession session = request.getSession();
 		Cart cart = (Cart)session.getAttribute("cart");
 		if(cart==null){
@@ -214,15 +212,15 @@ public class ClientServlet extends HttpServlet {
 			session.setAttribute("cart", cart);
 		}
 		cart.addBook(book);
-		//��ʾ����ɹ�
-		request.setAttribute("message", "<script type='text/javascript'>alert('购买中...')</script>");
+		//锟斤拷示锟斤拷锟斤拷晒锟�		request.setAttribute("message", "<script type='text/javascript'>alert('璐拱涓�..')</script>");
      	request.getRequestDispatcher("/showCart.jsp").forward(request, response);
 	/*	response.sendRedirect("/client/ClientServlet?operation=showSelfOrders");*/
 	
 	}
-	//���շ����ѯ��ҳ����
+	//锟斤拷锟秸凤拷锟斤拷锟窖拷锟揭筹拷锟斤拷锟�	
 	private void showCategoryBooks(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+		
 		String pagenum = request.getParameter("pagenum");
 		String categoryId = request.getParameter("categoryId");
 		Page page = s.findAllBooksByCategory(pagenum,categoryId);
@@ -230,14 +228,14 @@ public class ClientServlet extends HttpServlet {
 		request.setAttribute("page", page);
 		request.getRequestDispatcher("/listBooks.jsp").forward(request, response);
 	}
-	//首页展示
+	//棣栭〉灞曠ず
 	private void showAllBooks(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		String pagenum = request.getParameter("pagenum");
 		Page page = s.findAllBooks(pagenum);
 		page.setUrl("/client/ClientServlet?operation=showAllBooks");
 		request.setAttribute("page", page);
-		//��ѯ���з�����Ϣ
+		//锟斤拷询锟斤拷锟叫凤拷锟斤拷锟斤拷息
 		List<Category> cs = (List<Category>) getServletContext().getAttribute("cs");
 		if(cs==null||cs.size()<1){
 			cs = s.findAllCategories();
