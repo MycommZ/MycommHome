@@ -3,7 +3,7 @@
 
 <br/>
 <br/>
-	
+	<center>
 	<form id="f1" action="${pageContext.request.contextPath}/manager/ManagerServlet?operation=showPayedOrders" method="post">
 		状态查询：<select name="status" onchange="document.getElementById('f1').submit()">
 			<option value="0" ${numStatus==0?'selected="selected"':''}>未付款</option>
@@ -15,7 +15,7 @@
 		<h4>没有任何订单</h4>
 	</c:if>
     <c:if test="${!empty os}">
-    	<table style="font-size: 12px" width="68%" border="1">
+    	<table style="font-size: 12px" width="68%" border="1"  cellpadding="0" cellspacing="0">
 	    	<tr>
 	    		<th>客户姓名</th>
 	    		<th>订单号</th>
@@ -43,6 +43,6 @@
 	    	</c:forEach>
 	    </table>
     </c:if>
-    
+    </center>
   </body>
 </html>

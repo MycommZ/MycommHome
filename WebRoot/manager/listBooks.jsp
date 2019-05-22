@@ -1,6 +1,7 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@include file="/login/header.jsp"%>
-	<table frame="border" width="68%">
+<center>
+	<table frame="border" width="68%" cellpadding="0" cellspacing="0">
 		<tr>
 			<th>书名</th>
 			<th>作者</th>
@@ -28,5 +29,6 @@
     	</c:forEach>
 	</table>
     <%@include file="/commons/page.jsp" %>
+    </center>
   </body>
 </html>

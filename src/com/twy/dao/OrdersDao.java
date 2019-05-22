@@ -17,4 +17,10 @@ public interface OrdersDao {
 
 	List<Orders> findOrdersByStatus(int i);
 
+	void deleteAll(String sid);
+
+	void deleAll(String id);
+
+	void xiuG(String id);
+
 }

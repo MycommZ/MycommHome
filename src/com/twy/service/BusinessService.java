@@ -17,7 +17,7 @@ public interface BusinessService {
 
 	void addBook(Book book);
 	/**
-	 * ²éÑ¯ËùÓÐÊé¼®µÄ·ÖÒ³Êý¾Ý
+	 * ï¿½ï¿½Ñ¯ï¿½ï¿½ï¿½ï¿½ï¿½é¼®ï¿½Ä·ï¿½Ò³ï¿½ï¿½ï¿½ï¿½
 	 * @param pagenum
 	 * @return
 	 */
@@ -25,7 +25,7 @@ public interface BusinessService {
 
 	Category findCategoryById(String categoryId);
 	/**
-	 * °´ÕÕ·ÖÀà²éÑ¯·ÖÒ³Êý¾Ý
+	 * ï¿½ï¿½ï¿½Õ·ï¿½ï¿½ï¿½ï¿½Ñ¯ï¿½ï¿½Ò³ï¿½ï¿½ï¿½ï¿½
 	 * @param pagenum
 	 * @param categoryId
 	 * @return
@@ -36,7 +36,7 @@ public interface BusinessService {
 
 	void regist(User user);
 	/**
-	 * ÅÐ¶ÏÓÃ»§ºÍÃÜÂëÊÇ·ñÕýÈ·£¬²¢ÇÒ¼¤»îÊ±²Å·µ»ØÊý¾Ý
+	 * ï¿½Ð¶ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½È·ï¿½ï¿½ï¿½ï¿½ï¿½Ò¼ï¿½ï¿½ï¿½Ê±ï¿½Å·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 * @param username
 	 * @param password
 	 * @return
@@ -50,13 +50,24 @@ public interface BusinessService {
 	void genOrders(Orders o);
 
 	List<Orders> findOrdersByUserId(String id);
-	//¸ÄÎªÒÑ¸¶¿î
+	//ï¿½ï¿½Îªï¿½Ñ¸ï¿½ï¿½ï¿½
 	void paiedOrders(String r6_Order);
-	//¸ù¾Ý¶©µ¥id²éÑ¯¶©µ¥Ïî£¬Í¬Ê±°Ñ¶©µ¥Ïî¹ØÁªµÄÊéÒ²²é³öÀ´
+	//ï¿½ï¿½ï¿½Ý¶ï¿½ï¿½ï¿½idï¿½ï¿½Ñ¯ï¿½ï¿½ï¿½ï¿½ï¿½î£¬Í¬Ê±ï¿½Ñ¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò²ï¿½ï¿½ï¿½ï¿½ï¿½
 	List<OrdersItem> findOrdersItemByOrdersId(String ordersId);
-	//¸ù¾Ý×´Ì¬²éÑ¯¶©µ¥ÐÅÏ¢£º»¹Òª²éÓÃ»§
+	//ï¿½ï¿½ï¿½ï¿½×´Ì¬ï¿½ï¿½Ñ¯ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½Ã»ï¿½
 	List<Orders> findOrdersByStatus(int i);
-	//·¢»õ
+	//ï¿½ï¿½ï¿½ï¿½
 	void sendBook(String ordersNum);
+
+	
+	/**
+	 * ä¸šåŠ¡å±‚åˆ é™¤æ–¹æ³•
+	 * @param sid
+	 */
+	void deleteAll(String sid);
+
+	void deleAll(String id);
+
+	void xiuG(String id);
 
 }

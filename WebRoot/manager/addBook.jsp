@@ -1,7 +1,7 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@include file="/login/header.jsp"%>
 	
-	
+	<center>
     <form action="${pageContext.request.contextPath}/manager/ManagerServlet?operation=addBook" method="post" enctype="multipart/form-data">
   	<div class="divNormalClass">
   		书名：<input type="text" name="name" /><br/>
@@ -16,6 +16,7 @@
   		</select>
   		<input type="submit" value="保存"/>
   	</div>
+  	</center>
   </form> 
   </body>
 </html>

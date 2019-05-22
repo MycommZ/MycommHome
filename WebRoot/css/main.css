@@ -9,3 +9,8 @@ body {
 	border: 1px;
 	text-align: left;
 }
+
+table{
+	 cellpadding:0px;
+	 cellspacing:0px;
+}

@@ -1,5 +1,6 @@
 package com.twy.dao.impl;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import org.apache.commons.dbutils.QueryRunner;
@@ -16,12 +17,15 @@ import com.twy.util.DBCPUtil;
 
 public class OrdersDaoImpl implements OrdersDao {
 	private QueryRunner qr = new QueryRunner(DBCPUtil.getDataSource());
+	
+	
 	public void addOrders(Orders o) {
+
 		try{
-			//±£´æ¶©µ¥µÄ»ù±¾ÐÅÏ¢
+			//ï¿½ï¿½ï¿½æ¶©ï¿½ï¿½ï¿½Ä»ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
 			qr.update("insert into orders(id,ordersnum,num,money,status,userId) values(?,?,?,?,?,?)", 
 					o.getId(),o.getOrdersnum(),o.getNum(),o.getMoney(),o.getStatus(),o.getUser().getId());
-			//ÅÐ¶Ï¶©µ¥ÖÐÓÐÄ¾ÓÐ¶©µ¥Ïî£ºÈç¹ûÓÐ±£´æ¶©µ¥ÏîÐÅÏ¢
+			//ï¿½Ð¶Ï¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¾ï¿½Ð¶ï¿½ï¿½ï¿½ï¿½î£ºï¿½ï¿½ï¿½ï¿½Ð±ï¿½ï¿½æ¶©ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
 			List<OrdersItem> items = o.getItems();
 			if(items!=null&&items.size()>0){
 				Object params[][] = new Object[items.size()][];
@@ -54,7 +58,7 @@ public class OrdersDaoImpl implements OrdersDao {
 	public List<OrdersItem> findOrdersItemByOrdersId(String ordersId) {
 		try{
 			List<OrdersItem> items = qr.query("select * from orders_item where ordersId=?", new BeanListHandler<OrdersItem>(OrdersItem.class), ordersId);
-			//°ÑËû¹ØÁªµÄÊé²éÑ¯³öÀ´
+			//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¯ï¿½ï¿½ï¿½ï¿½
 			if(items!=null&&items.size()>0){
 				for(OrdersItem item:items){
 					Book book = qr.query("select * from book where id=(select bookId from orders_item where id=?)", new BeanHandler<Book>(Book.class), item.getId());
@@ -68,9 +72,9 @@ public class OrdersDaoImpl implements OrdersDao {
 	}
 	public List<Orders> findOrdersByStatus(int i) {
 		try{
-			//¸ù¾Ý¶©µ¥×´Ì¬²éÑ¯¶©µ¥
+			//ï¿½ï¿½ï¿½Ý¶ï¿½ï¿½ï¿½×´Ì¬ï¿½ï¿½Ñ¯ï¿½ï¿½ï¿½ï¿½
 			List<Orders> orders = qr.query("select * from orders where status=?", new BeanListHandler<Orders>(Orders.class), i);
-			//°Ñ¶©µ¥µÄ¹ºÂòÈË²éÑ¯³öÀ´
+			//ï¿½Ñ¶ï¿½ï¿½ï¿½ï¿½Ä¹ï¿½ï¿½ï¿½ï¿½Ë²ï¿½Ñ¯ï¿½ï¿½ï¿½ï¿½
 			if(orders!=null&&orders.size()>0){
 				for(Orders o:orders){
 					User user = qr.query("select u.* from user u,orders o where u.id=o.userId and o.id=?", new BeanHandler<User>(User.class), o.getId());
@@ -81,6 +85,35 @@ public class OrdersDaoImpl implements OrdersDao {
 		}catch(Exception e){
 			throw new DaoException(e);
 		}
+	}
+	@Override
+	public void deleteAll(String sid) {
+		try {
+//			qr.update(DBCPUtil.getConnection(), "DELETE  FROM  ORDERS where id in (SELECT  ordersId from  ORDERS_item where BOOKID =?)", sid);
+			qr.update(DBCPUtil.getConnection(), "DELETE FROM   ORDERS_item  WHERE  BOOKID=?", sid);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	@Override
+	public void deleAll(String id) {
+		try {
+			qr.update(DBCPUtil.getConnection(), "DELETE FROM   ORDERS  WHERE  id=?", id);
+		} catch (SQLException e) {
+		
+			e.printStackTrace();
+		}
+		
+	}
+	@Override
+	public void xiuG(String id) {
+		try {
+			qr.update("update orders set (?,?,?,?,?,?) where id=?",id);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 }

@@ -1,11 +1,11 @@
 package com.twy.web.controller;
 
 import java.io.IOException;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,6 +28,10 @@ import com.twy.web.bean.CartItem;
 import com.twy.web.bean.Page;
 
 public class ClientServlet extends HttpServlet {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private BusinessService s = new BusinessServiceImpl();
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -54,7 +58,71 @@ public class ClientServlet extends HttpServlet {
 			paySuccess(request,response);
 		}else if("showOrdersDetail".equals(operation)){
 			showOrdersDetail(request,response);
+		}else if("delete".equals(operation)){
+		     deleteOne(request,response);
+		}else if("dele".equals(operation)) {
+			deleOne(request,response);
+		}else if("cha".equals(operation)) {
+			chaOne(request,response);
 		}
+	}
+	//showOrders修改方法
+	private void chaOne(HttpServletRequest request, HttpServletResponse response) {
+		String id = request.getParameter("id");
+//		s.xiuG(id);
+		try {
+			request.getRequestDispatcher("/showOrders.jsp").forward(request, response);
+		} catch (ServletException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	//showOrders删除方法
+	private void deleOne(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+		String id = request.getParameter("id");
+		s.deleAll(id);
+		showSelfOrders(request,response);
+//		request.getSession().removeAttribute("cart");
+//		request.setAttribute("message", "<script type='text/javascript'>alert(删除成功)</script>");
+//		try {
+//			try {
+//				showOrdersDetail(request,response);
+//				request.getRequestDispatcher("/showOrdersDetail.jsp").forward(request, response);
+//				
+//			} catch (ServletException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+	}
+
+	//showCart删除方法
+	private void deleteOne(HttpServletRequest request, HttpServletResponse response) {
+		   String sid = request.getParameter("id");
+		   System.out.println("456"+sid);
+		    s .deleteAll(sid);
+		/*	 Enumeration em = request.getSession().getAttributeNames();
+		     while(em.hasMoreElements()){
+		        request.getSession().removeAttribute(em.nextElement().toString());
+		    }*/
+		    request.getSession().removeAttribute("cart");
+			request.setAttribute("message", "<script type='text/javascript'>alert(删除成功)</script>");
+			try {
+				request.getRequestDispatcher("/showCart.jsp").forward(request, response);
+			} catch (ServletException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	}
 	//锟斤拷锟捷讹拷锟斤拷锟斤拷id锟斤拷询锟斤拷锟斤拷锟斤拷
 	private void showOrdersDetail(HttpServletRequest request,
@@ -190,10 +258,11 @@ public class ClientServlet extends HttpServlet {
 					s.genOrders(o);//锟斤拷锟缴讹拷锟斤拷
 					}
 				}else{
-					throw new RuntimeException("锟斤拷锟斤车锟斤拷锟斤拷");
+					throw new RuntimeException("异常");
 				}
-				request.setAttribute("message", "<script type='text/javascript'>alert('锟斤拷锟斤拷锟斤拷锟缴成癸拷')</script>");
-				request.getRequestDispatcher("/showOrdersDetail.jsp").forward(request, response);
+				request.setAttribute("message", "<script type='text/javascript'>alert('订单生成中....')</script>");
+				 request.getSession().removeAttribute("cart");
+				request.getRequestDispatcher("/showCart.jsp").forward(request, response);
 		}else{
 			//没锟叫碉拷陆锟斤拷转锟斤拷锟铰揭筹拷锟�			response.sendRedirect(request.getContextPath()+"/login.jsp");
 		}

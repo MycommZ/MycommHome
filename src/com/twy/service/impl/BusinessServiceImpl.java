@@ -18,7 +18,7 @@ import com.twy.util.IdGenerator;
 import com.twy.web.bean.Page;
 
 public class BusinessServiceImpl implements BusinessService {
-	private CategoryDao cDao = BeanFactory.getInstance().getDaoImpl("CategoryDao",CategoryDao.class);//µ½µ×ÊÇÄÄ¸öÓÉ×Ô¼ºÎ¬»¤µÄ¡£ÓÉÍâ²¿Î¬»¤£¬¿ØÖÆÈ¨½»¸øÍâ²¿µÄ£¬¿ØÖÆ·´×ª
+	private CategoryDao cDao = BeanFactory.getInstance().getDaoImpl("CategoryDao",CategoryDao.class);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¸ï¿½ï¿½ï¿½ï¿½Ô¼ï¿½Î¬ï¿½ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½ï¿½â²¿Î¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¨ï¿½ï¿½ï¿½ï¿½ï¿½â²¿ï¿½Ä£ï¿½ï¿½ï¿½ï¿½Æ·ï¿½×ª
 	private BookDao bDao =BeanFactory.getInstance().getDaoImpl("BookDao",BookDao.class);
 	private UserDao uDao = BeanFactory.getInstance().getDaoImpl("UserDao",UserDao.class);
 	private OrdersDao oDao = BeanFactory.getInstance().getDaoImpl("OrdersDao",OrdersDao.class);
@@ -83,7 +83,7 @@ public class BusinessServiceImpl implements BusinessService {
 	public void genOrders(Orders o) {
 		o.setId(IdGenerator.genPK());
 		o.setOrdersnum(IdGenerator.genOrdersNum());
-		//ÉèÖÃ¹ºÎïÏîµÄid:ÒµÎñÃ»ÓÐÐèÒª
+		//ï¿½ï¿½ï¿½Ã¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½id:Òµï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½Òª
 		if(o.getItems()!=null){
 			for(OrdersItem item:o.getItems()){
 				item.setId(IdGenerator.genPK());
@@ -105,6 +105,21 @@ public class BusinessServiceImpl implements BusinessService {
 	}
 	public void sendBook(String ordersNum) {
 		oDao.updateOrders(ordersNum, 2);
+	}
+	@Override
+	public void deleteAll(String sid) {
+		oDao.deleteAll(sid);
+		
+	}
+	@Override
+	public void deleAll(String id) {
+		oDao.deleAll(id);
+		
+	}
+	@Override
+	public void xiuG(String id) {
+		oDao.xiuG(id);
+		
 	}
 
 }

@@ -9,9 +9,9 @@
 	
 	<c:if test="${empty sessionScope.cart.items}">
 		<h4>您还没有购买任何商品</h4>
-	</c:if>
+	</c:if> 
 	<c:if test="${!empty sessionScope.cart.items}">
-	    <table style="font-size: 12px" width="68%" border="1">
+	    <table style="font-size: 12px" width="68%" border="1"  cellpadding="0" cellspacing="0">
 	    	<tr>
 	    		<th>书名</th>
 	    		<th>作者</th>
@@ -28,7 +28,7 @@
 		    		<td>${me.value.num}</td>
 		    		<td>${me.value.price}</td>
 		    		<td>
-		    			[<a href="#">删除</a>]
+		    			[<a href="${pageContext.request.contextPath}/client/ClientServlet?operation=delete&id=${me.value.book.id}">删除</a>]
 		    		</td>
 		    	</tr>
 	    	</c:forEach>
