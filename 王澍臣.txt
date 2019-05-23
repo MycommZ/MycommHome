@@ -1,0 +1,5 @@
+2019-5-23 
+实习总结报告
+java odjc ResultSet 使用方法
+Statement stmt=con.createStatement(int type，int concurrency);
+看了一半
